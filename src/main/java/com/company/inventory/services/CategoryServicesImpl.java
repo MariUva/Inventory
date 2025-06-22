@@ -16,13 +16,9 @@ import com.company.inventory.response.CategoryResponseRest;
 
 @Service
 public class CategoryServicesImpl implements ICategoryService {
-
-  //  private final CategoryRestController categoryRestController;
-
+  
 	@Autowired
 	private ICategoryDao categoryDao;
-
- 
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -161,6 +157,34 @@ public class CategoryServicesImpl implements ICategoryService {
 		}catch (Exception e) {
 			
 			response.setMetadata("Respuesta nok", "-1","Error al actualizar categoria");
+			e.getStackTrace();
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+			
+		}
+		
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> delete(Long id) {
+		
+		CategoryResponseRest response = new CategoryResponseRest();
+		
+		
+		try {
+			
+			
+			categoryDao.deleteById(id);
+			response.setMetadata("Respuesta ok", "00", "Registro eliminado");
+			
+			
+		
+			
+		}catch (Exception e) {
+			
+			response.setMetadata("Respuesta nok", "-1","Error al consultar por id");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 
